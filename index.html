@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PORTFOLIO | 前田 卓大</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #F4F1EA;
+      --bg-card: #FAF8F5;
+      --text-color: #14130F;
+      --sub-text-color: #5A574E;
+      --border-color: #14130F;
+      --border-subtle: rgba(20, 19, 15, 0.18);
+      --accent: #1F8A5B;
+      --accent-red: #E5432D;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', 'Shippori Mincho', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 72px;
+    }
+
+    /* =========================================
+       1. HERO / COVER SECTION (表紙)
+    ========================================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 56px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .dots-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot-1 { left: 88px;  top: 447px; width: 24px;  height: 24px;  opacity: 0.20; }
+    .dot-2 { left: 200px; top: 345px; width: 36px;  height: 36px;  opacity: 0.28; }
+    .dot-3 { left: 310px; top: 273px; width: 52px;  height: 52px;  opacity: 0.36; }
+    .dot-4 { left: 418px; top: 263px; width: 72px;  height: 72px;  opacity: 0.46; }
+    .dot-5 { left: 521px; top: 313px; width: 102px; height: 102px; opacity: 0.58; }
+    .dot-6 { left: 617px; top: 386px; width: 146px; height: 146px; opacity: 0.70; }
+    .dot-7 { left: 702px; top: 427px; width: 212px; height: 212px; opacity: 0.82; }
+    .dot-8 { left: 771px; top: 391px; width: 310px; height: 310px; opacity: 0.92; }
+    .dot-9 { left: 920px; top: 220px; width: 560px; height: 560px; opacity: 1.00; }
+
+    .hero-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      letter-spacing: 0.18em;
+      font-weight: 500;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .hero-main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 40px 0;
+    }
+
+    .hero-catch {
+      font-family: 'Shippori Mincho', serif;
+      font-weight: 800;
+      font-size: 44px;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-title {
+      font-size: 218px;
+      line-height: 0.86;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-left: -8px;
+    }
+
+    .hero-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-top: 2px solid var(--border-color);
+      padding-top: 24px;
+    }
+
+    .profile-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .profile-name {
+      font-family: 'Shippori Mincho', serif;
+      font-weight: 800;
+      font-size: 40px;
+      letter-spacing: 0.12em;
+    }
+
+    .profile-role {
+      font-size: 16px;
+      color: var(--sub-text-color);
+      letter-spacing: 0.08em;
+    }
+
+    .contact-box {
+      font-size: 15px;
+      color: var(--text-color);
+      line-height: 1.8;
+      text-align: right;
+      letter-spacing: 0.06em;
+    }
+
+    .contact-box a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .contact-box a:hover {
+      opacity: 0.65;
+    }
+
+    /* =========================================
+       共通セクションスタイル
+    ========================================= */
+    .section {
+      padding: 100px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-num {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .section-en {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--sub-text-color);
+      font-weight: 500;
+    }
+
+    /* =========================================
+       2. ABOUT SECTION
+    ========================================= */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-lead {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.6;
+      letter-spacing: 0.04em;
+    }
+
+    .about-lead span {
+      color: var(--accent);
+    }
+
+    .about-text p {
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: var(--text-color);
+      line-height: 1.9;
+    }
+
+    /* =========================================
+       3. SKILLS & CERTIFICATIONS
+    ========================================= */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .skill-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .skill-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .skill-card h3 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 5px 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-color);
+    }
+
+    .tag.accent {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .skill-desc {
+      font-size: 14px;
+      color: var(--sub-text-color);
+      line-height: 1.75;
+    }
+
+    /* =========================================
+       4. WORKS / PROJECTS
+    ========================================= */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 32px;
+    }
+
+    .work-card {
+      border-top: 2px solid var(--border-color);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .work-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .work-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 21px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .work-desc {
+      font-size: 14px;
+      color: var(--sub-text-color);
+      line-height: 1.8;
+    }
+
+    .work-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-subtle);
+      font-size: 12px;
+    }
+
+    .work-tech {
+      color: var(--sub-text-color);
+      font-weight: 500;
+    }
+
+    .work-link {
+      color: var(--text-color);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid var(--text-color);
+    }
+
+    .work-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* =========================================
+       5. CAREER / TIMELINE
+    ========================================= */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .timeline-item:first-child {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .timeline-period {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .timeline-org {
+      font-size: 13px;
+      color: var(--sub-text-color);
+      margin-top: 4px;
+    }
+
+    .timeline-role {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .timeline-detail {
+      font-size: 14px;
+      color: var(--sub-text-color);
+      line-height: 1.8;
+    }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    .site-footer {
+      border-top: 2px solid var(--border-color);
+      padding: 48px 0;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .footer-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .footer-links a:hover {
+      border-bottom-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .copyright {
+      font-size: 12px;
+      color: var(--sub-text-color);
+      letter-spacing: 0.08em;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+    @media (max-width: 900px) {
+      .container {
+        padding: 0 24px;
+      }
+      .hero {
+        padding: 36px 24px;
+      }
+      .dots-layer {
+        opacity: 0.5;
+        transform: scale(0.55);
+        transform-origin: right center;
+      }
+      .nav-links {
+        display: none;
+      }
+      .contact-box {
+        text-align: left;
+      }
+      .about-grid,
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP COVER (表紙) -->
+  <section class="hero" id="top">
+    <div class="dots-layer" aria-hidden="true">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+      <div class="dot dot-4"></div>
+      <div class="dot dot-5"></div>
+      <div class="dot dot-6"></div>
+      <div class="dot dot-7"></div>
+      <div class="dot dot-8"></div>
+      <div class="dot dot-9"></div>
+    </div>
+
+    <header class="hero-header">
+      <span>APPLICANT PORTFOLIO</span>
+      <nav class="nav-links">
+        <a href="#about">ABOUT</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#works">WORKS</a>
+        <a href="#career">CAREER</a>
+      </nav>
+    </header>
+
+    <main class="hero-main">
+      <div class="hero-catch">これまでと、<span style="color: var(--accent-red); font-size: 68px;">これ</span>から。</div>
+      <div class="hero-title">PORT<br>FOLIO</div>
+    </main>
+
+    <footer class="hero-footer">
+      <div class="profile-box">
+        <div class="profile-name">前田 卓大</div>
+        <div class="profile-role">IT Systems Administration / Infrastructure / Automation</div>
+      </div>
+      <div class="contact-box">
+        <div><a href="mailto:tmaeda@cafeacb.jp">tmaeda@cafeacb.jp</a></div>
+        <div><a href="#about">Scroll to Explore ↓</a></div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- 2. ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-num">01</div>
+          <h2 class="section-title">概要・強み</h2>
+        </div>
+        <span class="section-en">ABOUT ME</span>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-lead">
+          現場の課題を紐解き、<br>
+          <span>「仕組み」と「自動化」</span>で<br>
+          業務を前に進める。
+        </div>
+        <div class="about-text">
+          <p>
+            教育機関でのデータ集計・RPA業務自動化から始まり、医療機関でのSQLを用いたデータ抽出・管理、そしてITインフラ支援・企業内システム管理まで、一貫して「現場で実際に使われるITの仕組みづくり」に携わってきました。
+          </p>
+          <p>
+            Windows 11移行やActive Directory環境での端末・アカウント運用といったインフラ基盤の知識と、Excel / VBA / WinActor / PowerShell / Pythonを活用した業務効率化の両軸を強みとしています。現在はネットワーク・Linux領域のさらなる専門性向上に向け、CCNA・LPICの習得にも取り組んでいます。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SKILLS & CERTIFICATIONS -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-num">02</div>
+          <h2 class="section-title">技術領域・資格</h2>
+        </div>
+        <span class="section-en">SKILLS &amp; CERTIFICATIONS</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-card-head">
+            <span class="skill-dot"></span>
+            <h3>ITインフラ・システム運用</h3>
+          </div>
+          <div class="tag-list">
+            <span class="tag">Windows 11 移行</span>
+            <span class="tag">Active Directory</span>
+            <span class="tag">キッティング・端末管理</span>
+            <span class="tag">アクセス権限管理</span>
+            <span class="tag">Linux (学習中)</span>
+            <span class="tag">Network (学習中)</span>
+          </div>
+          <p class="skill-desc">
+            企業内IT部門およびインフラ支援現場において、OS移行プロジェクト、アカウント・権限管理、各種ソフトウェア展開やトラブルシューティングを担当。
+          </p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-head">
+            <span class="skill-dot"></span>
+            <h3>業務自動化・データ処理</h3>
+          </div>
+          <div class="tag-list">
+            <span class="tag">Excel / VBA</span>
+            <span class="tag">WinActor (RPA)</span>
+            <span class="tag">SQL</span>
+            <span class="tag">PowerShell</span>
+            <span class="tag">Python (Flet)</span>
+          </div>
+          <p class="skill-desc">
+            定型業務のRPA・マクロ化による工数削減、SQLを用いた医療・業績データの抽出および集計レポート構築、スクリプトによるファイル処理自動化。
+          </p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-head">
+            <span class="skill-dot"></span>
+            <h3>保有資格・学習トラック</h3>
+          </div>
+          <div class="tag-list">
+            <span class="tag accent">ITパスポート（取得済）</span>
+            <span class="tag">CCNA（取得準備中）</span>
+            <span class="tag">LPIC-1（取得準備中）</span>
+          </div>
+          <p class="skill-desc">
+            基礎的なITマネジメント知識に加え、ネットワーク（Cisco）およびLinuxサーバー構築・運用の体系的な知識を実践演習を通じて習得中。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WORKS / PROJECTS -->
+  <section class="section" id="works">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-num">03</div>
+          <h2 class="section-title">実績・制作物</h2>
+        </div>
+        <span class="section-en">SELECTED WORKS</span>
+      </div>
+
+      <div class="works-grid">
+        <article class="work-card">
+          <div>
+            <div class="work-meta">
+              <span>AUTOMATION / RPA</span>
+              <span>WORK</span>
+            </div>
+            <h3 class="work-title">月次業績集計・帳票作成の自動化ツールチェーン構築</h3>
+            <p class="work-desc">
+              本部管理部門にて、複数拠点から集まるデータの集計・整形プロセスをWinActorとExcelマクロで自動化。手作業による転記ミスをなくし、月次レポート作成工数を大幅に削減。
+            </p>
+          </div>
+          <div class="work-footer">
+            <span class="work-tech">WinActor / Excel VBA</span>
+            <span class="work-tech">業務改善実績</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div>
+            <div class="work-meta">
+              <span>DATABASE / SQL</span>
+              <span>WORK</span>
+            </div>
+            <h3 class="work-title">健診データ抽出クエリ設計とセキュア配布フロー運用</h3>
+            <p class="work-desc">
+              医療機関において、SQLを用いた条件別の健診データ抽出・加工を担当。精度の高いデータクレンジングと、光学メディアを用いた安全な納品・管理フローを運用。
+            </p>
+          </div>
+          <div class="work-footer">
+            <span class="work-tech">SQL / Data Management</span>
+            <span class="work-tech">業務改善実績</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div>
+            <div class="work-meta">
+              <span>DESKTOP APP / PYTHON</span>
+              <span>PERSONAL DEV</span>
+            </div>
+            <h3 class="work-title">ローカル完結型・季節連動お買い物支援アプリ</h3>
+            <p class="work-desc">
+              クラウドに依存せずローカル環境で安全に動作するパーソナル支援アプリをPython（Flet）で設計・開発。季節ごとの消費サイクルを考慮した買い忘れ防止ロジックを実装。
+            </p>
+          </div>
+          <div class="work-footer">
+            <span class="work-tech">Python / Flet / Local DB</span>
+            <a href="#top" class="work-link">GitHub / Article →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CAREER -->
+  <section class="section" id="career">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-num">04</div>
+          <h2 class="section-title">職務経歴・歩み</h2>
+        </div>
+        <span class="section-en">CAREER TIMELINE</span>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-period">CURRENT</div>
+            <div class="timeline-org">企業内情報システム部門</div>
+          </div>
+          <div>
+            <h3 class="timeline-role">システム管理・IT運用担当</h3>
+            <p class="timeline-detail">
+              社内アプリケーションの展開管理、ユーザーアクセス権限の統制、および業務用デバイスの構成管理・ヘルプデスク対応を担当。
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-period">INFRASTRUCTURE</div>
+            <div class="timeline-org">DOWAテクノエンジ</div>
+          </div>
+          <div>
+            <h3 class="timeline-role">ITインフラ支援・PC展開エンジニア</h3>
+            <p class="timeline-detail">
+              Windows 11へのOS移行プロジェクト支援、Active Directoryドメイン統合、グループウェア・コラボレーションツールのトラブルシューティングに従事。
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-period">DATA OPERATIONS</div>
+            <div class="timeline-org">一般財団法人 淳風会</div>
+          </div>
+          <div>
+            <h3 class="timeline-role">医療データ抽出・コンパイル担当</h3>
+            <p class="timeline-detail">
+              SQLクエリを用いた健康診断データの抽出・集計、および外部提供用デジタルメディアへのデータ作成・検証業務を担当。
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-period">EDUCATION &amp; RPA</div>
+            <div class="timeline-org">株式会社ティエラコム（本部 / 神戸）</div>
+          </div>
+          <div>
+            <h3 class="timeline-role">本部業務自動化・データ分析 / 講師・大会運営</h3>
+            <p class="timeline-detail">
+              本部にて月次業績分析およびWinActor・Excelを用いた業務自動化ツールチェーンを構築（5年間）。また英語講師（5年間）や、FIRST LEGO League 関西大会の地域運営ディレクターも歴任。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="mailto:tmaeda@cafeacb.jp">tmaeda@cafeacb.jp</a>
+        <a href="#top">PAGE TOP ↑</a>
+      </div>
+      <div class="copyright">© 2026 TAKAHIRO MAEDA. ALL RIGHTS RESERVED.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
