@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCNA 単語帳</title>
+<style>
+:root{--bg:#f6f7f9;--fg:#1c1e22;--card:#fff;--muted:#666d78;--accent:#2563eb;--ok:#15803d;--ng:#b91c1c;--bd:#d9dde3}
+@media (prefers-color-scheme:dark){:root{--bg:#14161a;--fg:#e8eaed;--card:#1e2126;--muted:#9aa1ab;--accent:#6ea0ff;--ok:#4ade80;--ng:#f87171;--bd:#343942;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;line-height:1.6}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.15rem;margin:0 0 12px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1}.tabs .on{background:var(--accent);border-color:var(--accent);color:#fff}
+button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:10px;padding:9px 14px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.sm{font-size:.8rem;padding:4px 10px}
+.ok{color:var(--ok);border-color:var(--ok)}.ng{color:var(--ng);border-color:var(--ng)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 18px;margin-bottom:14px}
+.stats{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:8px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.abbr{font-size:2.6rem;font-weight:700;text-align:center;letter-spacing:.04em;margin:6px 0 14px}
+label{font-size:.8rem;color:var(--muted);display:block;margin-top:10px}
+input,textarea{width:100%;margin-top:4px;padding:9px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit}
+textarea{min-height:76px;resize:vertical}
+.full-btn{width:100%;margin-top:12px}
+.ans{margin-top:16px;padding-top:12px;border-top:1px dashed var(--bd)}
+.ans .f{font-size:1.1rem;font-weight:700}.ans .j{color:var(--accent);margin:2px 0 8px}.ans .d{font-size:.92rem}
+.row{display:flex;gap:10px;margin-top:12px}.row>*{flex:1}
+.hide{display:none}
+.item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.item .t{flex:1;min-width:0}.item .t b{margin-right:8px}.item .t span{color:var(--muted);font-size:.85rem}
+.item .k{font-size:.75rem;color:var(--ok)}
+.muted{color:var(--muted);font-size:.85rem}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<main>
+<h1>CCNA 単語帳(記述式フラッシュカード)</h1>
+<div class="tabs"><button id="tS" class="on">学習</button><button id="tM">単語管理</button></div>
+<section id="vS"></section>
+<section id="vM" class="hide">
+  <div class="card">
+    <b id="formTitle">単語を追加</b>
+    <label for="fa">略語・用語(表面に出ます)</label><input id="fa" placeholder="例: VLAN">
+    <label for="ff">フルスペル</label><input id="ff" placeholder="例: Virtual Local Area Network">
+    <label for="fj">日本語訳</label><input id="fj" placeholder="例: 仮想LAN">
+    <label for="fd">意味・説明</label><textarea id="fd" placeholder="例: ブロードキャストドメインを論理的に分割する"></textarea>
+    <div class="row"><button class="primary" id="fsave">追加</button><button id="fcancel" class="hide">編集をやめる</button></div>
+    <div id="fmsg" class="muted"></div>
+  </div>
+  <div class="card">
+    <b>まとめて追加・バックアップ</b>
+    <p class="muted">CSVの列は「略語,フルスペル,日本語訳,意味・説明」の順です。同じ略語がある場合は上書きします。</p>
+    <textarea id="bulk" placeholder="OSPF,Open Shortest Path First,オープン最短経路優先,リンクステート型のIGP"></textarea>
+    <div class="row"><button id="bulkAdd">貼り付けた内容を追加</button><button id="exp">CSVを書き出し</button></div>
+    <div class="row"><button id="impBtn">CSVファイルを読み込み</button><input type="file" id="impFile" accept=".csv,.txt" class="hide"></div>
+  </div>
+  <div class="card"><b id="listTitle"></b><div id="list"></div></div>
+</section>
+</main>
+<script>
+var SEED=[
+["VLAN","Virtual Local Area Network","仮想LAN","物理構成に関係なく、ブロードキャストドメインを論理的に分割する。"],
+["STP","Spanning Tree Protocol","スパニングツリープロトコル","L2ネットワークのループを防止する(IEEE 802.1D)。"],
+["RSTP","Rapid Spanning Tree Protocol","高速スパニングツリープロトコル","STPより収束が速い(IEEE 802.1w)。"],
+["OSPF","Open Shortest Path First","オープン最短経路優先","リンクステート型のIGP。メトリックはコスト、AD(管理距離)は110。"],
+["NAT","Network Address Translation","ネットワークアドレス変換","プライベートIPとグローバルIPを相互に変換する。"],
+["PAT","Port Address Translation","ポートアドレス変換","ポート番号も使い、1つのグローバルIPを複数端末で共有する(NAT overload)。"],
+["DHCP","Dynamic Host Configuration Protocol","動的ホスト構成プロトコル","IPアドレスなどを自動で割り当てる。Discover → Offer → Request → Acknowledge。"],
+["DNS","Domain Name System","ドメインネームシステム","ドメイン名をIPアドレスに変換する名前解決の仕組み。"],
+["ARP","Address Resolution Protocol","アドレス解決プロトコル","IPアドレスから対応するMACアドレスを調べる。"],
+["ACL","Access Control List","アクセスコントロールリスト","パケットを条件で許可・拒否する。末尾に暗黙のdeny(implicit deny)がある。"],
+["HSRP","Hot Standby Router Protocol","ホットスタンバイルータプロトコル","デフォルトゲートウェイを冗長化するCisco独自のFHRP。標準版はVRRP。"],
+["FHRP","First Hop Redundancy Protocol","ファーストホップ冗長プロトコル","デフォルトゲートウェイ冗長化プロトコル群の総称(HSRP、VRRPなど)。"],
+["LACP","Link Aggregation Control Protocol","リンクアグリゲーション制御プロトコル","複数の物理リンクを1本の論理リンクに束ねる標準プロトコル(IEEE 802.3ad)。"],
+["AD","Administrative Distance","管理距離","ルーティング情報源の信頼度。小さいほど優先。直接接続0、スタティック1、EIGRP 90、OSPF 110、RIP 120。"],
+["NTP","Network Time Protocol","ネットワークタイムプロトコル","機器の時刻を同期する(UDP 123)。"],
+["CDP","Cisco Discovery Protocol","シスコディスカバリプロトコル","隣接するCisco機器の情報を検出する独自プロトコル。標準版はLLDP。"]
+];
+var KEY="ccna_cards_v1",words=load(),queue=[],qi=0,editIdx=-1;
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function load(){try{var s=localStorage.getItem(KEY);if(s){var a=JSON.parse(s);if(Array.isArray(a))return a}}catch(e){}return SEED.map(function(x){return{a:x[0],f:x[1],j:x[2],d:x[3],k:false}})}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(words))}catch(e){$("fmsg").textContent="ブラウザに保存できませんでした。CSVで書き出して控えを取ってください。"}}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t}return a}
+function buildQueue(){queue=shuffle(words.map(function(_,k){return k}).filter(function(k){return !words[k].k}));qi=0}
+function knownCount(){return words.filter(function(w){return w.k}).length}
+
+function study(){
+  var n=words.length,kc=knownCount(),h="";
+  if(!n){$("vS").innerHTML='<div class="card center">単語がありません。「単語管理」から追加してください。</div>';return}
+  h+='<div class="stats"><span>残り '+Math.max(queue.length-qi,0)+' 枚</span><span>覚えた '+kc+' / '+n+'</span></div><div class="bar"><i style="width:'+(kc/n*100)+'%"></i></div>';
+  if(qi>=queue.length){
+    h+='<div class="card center"><div style="font-size:1.3rem;font-weight:700;margin:6px 0">'+(kc===n?"全部覚えました":"今回の分は終わりです")+'</div><div class="row"><button class="primary" id="again2">覚えた印をリセットして最初から</button></div></div>';
+    $("vS").innerHTML=h;
+    $("again2").onclick=function(){words.forEach(function(w){w.k=false});save();buildQueue();study()};
+    return;
+  }
+  var w=words[queue[qi]];
+  h+='<div class="card"><div class="abbr">'+esc(w.a)+'</div>'+
+  '<label for="ua">① フルスペル(英語)</label><textarea id="ua" style="min-height:48px" placeholder="例: Virtual ..."></textarea>'+
+  '<div style="margin-top:8px"><button class="sm" id="hintBtn">ヒント</button> <span id="hint" class="muted" style="margin-left:8px"></span></div>'+
+  '<label for="um">② 意味・何をするものか</label><textarea id="um" placeholder="日本語で説明を書いてみましょう"></textarea>'+
+  '<button class="primary full-btn" id="rev">答えを見る</button>'+
+  '<div class="ans hide" id="ans"><div class="f">'+esc(w.a)+' = '+esc(w.f)+'</div><div class="j">'+esc(w.j)+'</div><div class="d"><b>意味・説明:</b> '+esc(w.d)+'</div>'+
+  '<div class="row"><button class="ng" id="again">もう一度</button><button class="ok" id="got">覚えた</button></div></div></div>';
+  $("vS").innerHTML=h;
+  $("hintBtn").onclick=function(){$("hint").textContent="最初の単語: "+w.f.split(/\s+/)[0]+" …";this.classList.add("hide")};
+  $("rev").onclick=function(){$("ans").classList.remove("hide");this.classList.add("hide")};
+  $("got").onclick=function(){w.k=true;save();qi++;study()};
+  $("again").onclick=function(){queue.push(queue[qi]);qi++;study()};
+}
+
+function renderList(){
+  $("listTitle").textContent="登録済みの単語("+words.length+"語)";
+  var h="";
+  words.forEach(function(w,i){h+='<div class="item"><div class="t"><b>'+esc(w.a)+'</b><span>'+esc(w.f)+'</span></div>'+(w.k?'<span class="k">覚えた</span>':'')+'<button class="sm" data-e="'+i+'">編集</button><button class="sm ng" data-x="'+i+'">削除</button></div>'});
+  $("list").innerHTML=h||'<p class="muted">まだありません。</p>';
+}
+$("list").onclick=function(e){
+  var t=e.target,i;
+  if(t.dataset.e!==undefined){i=+t.dataset.e;editIdx=i;var w=words[i];$("fa").value=w.a;$("ff").value=w.f;$("fj").value=w.j;$("fd").value=w.d;$("formTitle").textContent="単語を編集";$("fsave").textContent="更新";$("fcancel").classList.remove("hide");window.scrollTo(0,0)}
+  else if(t.dataset.x!==undefined){i=+t.dataset.x;if(confirm("「"+words[i].a+"」を削除しますか?")){words.splice(i,1);save();renderList();buildQueue()}}
+};
+function resetForm(){editIdx=-1;["fa","ff","fj","fd"].forEach(function(id){$(id).value=""});$("formTitle").textContent="単語を追加";$("fsave").textContent="追加";$("fcancel").classList.add("hide")}
+$("fcancel").onclick=resetForm;
+$("fsave").onclick=function(){
+  var a=$("fa").value.trim(),f=$("ff").value.trim();
+  if(!a||!f){$("fmsg").textContent="略語とフルスペルは必須です。";return}
+  var o={a:a,f:f,j:$("fj").value.trim(),d:$("fd").value.trim(),k:false};
+  if(editIdx>=0){o.k=words[editIdx].k;words[editIdx]=o;$("fmsg").textContent="更新しました。"}
+  else{upsert(o);$("fmsg").textContent="追加しました。"}
+  save();resetForm();renderList();buildQueue();
+};
+function upsert(o){
+  var i=words.findIndex(function(w){return w.a.toLowerCase()===o.a.toLowerCase()});
+  if(i>=0){o.k=words[i].k;words[i]=o;return "u"}
+  words.push(o);return "a";
+}
+
+function parseCSV(t){
+  var rows=[],r=[],c="",q=false;
+  for(var i=0;i<t.length;i++){
+    var ch=t[i];
+    if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}
+    else if(ch==='"')q=true;
+    else if(ch===","||ch==="\t"){r.push(c);c=""}
+    else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&t[i+1]==="\n")i++;r.push(c);c="";rows.push(r);r=[]}
+    else c+=ch;
+  }
+  if(c!==""||r.length){r.push(c);rows.push(r)}
+  return rows;
+}
+function importText(t){
+  var rows=parseCSV(t.replace(/^\uFEFF/,"")),a=0,u=0;
+  rows.forEach(function(r){
+    if(!r[0]||!r[0].trim()||r[0].trim()==="略語"||!r[1]||!r[1].trim())return;
+    var res=upsert({a:r[0].trim(),f:r[1].trim(),j:(r[2]||"").trim(),d:(r[3]||"").trim(),k:false});
+    if(res==="a")a++;else u++;
+  });
+  save();renderList();buildQueue();
+  $("fmsg").textContent=a+"語を追加、"+u+"語を上書きしました。";
+}
+$("bulkAdd").onclick=function(){importText($("bulk").value);$("bulk").value=""};
+$("impBtn").onclick=function(){$("impFile").click()};
+$("impFile").onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){importText(r.result)};r.readAsText(f,"UTF-8");this.value=""};
+$("exp").onclick=function(){
+  var q=function(s){return '"'+String(s).replace(/"/g,'""')+'"'};
+  var t="\uFEFF略語,フルスペル,日本語訳,意味・説明\r\n"+words.map(function(w){return [w.a,w.f,w.j,w.d].map(q).join(",")}).join("\r\n");
+  var b=new Blob([t],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");
+  a.href=u;a.download="ccna_words.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000);
+};
+
+function tab(m){
+  $("vS").classList.toggle("hide",m!=="S");$("vM").classList.toggle("hide",m!=="M");
+  $("tS").classList.toggle("on",m==="S");$("tM").classList.toggle("on",m==="M");
+  if(m==="S"){buildQueue();study()}else renderList();
+}
+$("tS").onclick=function(){tab("S")};$("tM").onclick=function(){tab("M")};
+tab("S");
+</script>
+</body>
+</html>
